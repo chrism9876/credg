@@ -1,5 +1,6 @@
 if(!('CredentialGuard' -match ((Get-ComputerInfo).DeviceGuardSecurityServicesConfigured))){
 write-output "Credential Guard already disabled"
+start-sleep 5
 exit 0
 }
 
