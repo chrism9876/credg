@@ -1,4 +1,7 @@
-if(!('CredentialGuard' -match ((Get-ComputerInfo).DeviceGuardSecurityServicesConfigured))){
+$info=Get-ComputerInfo
+$vbsinfo=$info.DeviceGuardSecurityServicesConfigured + $info.DeviceGuardSecurityServicesRunning
+
+if(!($vbsinfo -contains 'CredentialGuard')){
 write-output "Credential Guard already disabled"
 start-sleep 5
 exit 0
@@ -6,6 +9,7 @@ exit 0
 
 
 $regkey="HKLM:\SYSTEM\CurrentControlSet\Control\Lsa"
+if(!(test-path)){new-item $regkey}
 $name="LsaCfgFlags"
 if((Get-ItemProperty $regkey).PSObject.Properties.Name -contains $name){
 Set-ItemProperty -Path $regkey -name $name -Value 0
@@ -14,6 +18,7 @@ new-ItemProperty -Path $regkey -name $name -Value 0 -Type Dword -ErrorAction Sil
 }
 
 $regkey="HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard"
+if(!(test-path)){new-item $regkey}
 $name="LsaCfgFlags"
 if((Get-ItemProperty $regkey).PSObject.Properties.Name -contains $name){
 Set-ItemProperty -Path $regkey -name $name -Value 0
