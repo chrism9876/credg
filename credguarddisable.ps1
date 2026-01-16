@@ -9,7 +9,7 @@ exit 0
 
 
 $regkey="HKLM:\SYSTEM\CurrentControlSet\Control\Lsa"
-if(!(test-path)){new-item $regkey}
+if(!(test-path $regkey)){new-item $regkey}
 $name="LsaCfgFlags"
 if((Get-ItemProperty $regkey).PSObject.Properties.Name -contains $name){
 Set-ItemProperty -Path $regkey -name $name -Value 0
@@ -18,7 +18,7 @@ new-ItemProperty -Path $regkey -name $name -Value 0 -Type Dword -ErrorAction Sil
 }
 
 $regkey="HKLM:\SOFTWARE\Policies\Microsoft\Windows\DeviceGuard"
-if(!(test-path)){new-item $regkey}
+if(!(test-path $regkey)){new-item $regkey}
 $name="LsaCfgFlags"
 if((Get-ItemProperty $regkey).PSObject.Properties.Name -contains $name){
 Set-ItemProperty -Path $regkey -name $name -Value 0
